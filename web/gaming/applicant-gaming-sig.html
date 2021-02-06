@@ -20,79 +20,60 @@
   <meta name="msapplication-TileColor" content="#ffffff">
   <meta name="msapplication-TileImage" content="../img/favicon/ms-icon-144x144.png">
   <meta name="theme-color" content="#ffffff">
-  <title>Grasshopper - State Gaming License Application</title>
+  <title>Grasshopper - Applicant Gaming License</title>
 </head>
 <body>
-  <h1>State Gaming License Application</h1>
-  <h2>1) Create Application Signature</h2>
+  <h1>Applicant Gaming License</h1>
+  <h2>1) Create Signature</h2>
   <h2>Applicant Info</h2>
   <div id="web3-warning" class="hidden warning">
     Make sure the example app is being served with an HTTP server. <br />
     Please install MetaMask: <a href="https://metamask.io/">https://metamask.io/</a>
   </div>
   <div class="card">
-    <label>Name: </label>&nbsp;<input id="applicant-name" type="text" value="Fooberry S Barston" />
-    <br />
-    <br />
-    <label>ID Type: </label>&nbsp;<input id="applicant-id-type" type="text" value="Drivers License" />
-    <br />
-    <br />
-    <label>ID #: </label>&nbsp;<input id="applicant-id-number" type="text" value="02-42424242" />
-    <br />
-    <br />
-    <label>Applicant ETH Address: </label>&nbsp;<input id="applicant-eth-address" type="text" value="0xD0896e012907d9938BE5d3fBc8e9FF5d284E2214" readonly/>
+    <label>Licensee Address: </label>&nbsp;<span id="my-address"></span>
     <br />
     <input id="sign" type="submit" value="Create Application Signature" />
   </div>
-  <h2>2) Broadcast Signature to Gaming License Registry </h2>
-  
+  <h2>2) Broadcast Signature to Gaming License Registry</h2>
   <div class="card">
     <!--
-    <label>Name: </label>&nbsp;<input id="name" type="text" /> 
-    <br />
-    <label>Applicant:</label>&nbsp;<span id="applicant-eth-address"></span>
+    <label>Applicant:</label>&nbsp;<span id="my-address"></span>
      <br />
-      -->
+    <label>Nonce: </label>&nbsp;<input id="nonce" type="text" />
+    <br />
     <label>Expiry: </label>&nbsp;<input id="expiry" type="text" />
     <br />
+    -->
     <label>Signature: </label>&nbsp;<input id="signature" type="text" />
     <br />
     <input id="apply" type="submit" value="Broadcast License Request" />
   </div>
-
-  <div class="card">
-    <a href="./applicant-gaming-sig.html">>>>Step 3: Applicant Gaming Signature Interface</a>
-  </div> 
-  <br />
-  <br />
-  <br />
 </body>
 
 
 <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.2.6/dist/web3.min.js"></script>
 <script type="text/javascript" src="../js/GamingLicenseRegistry.js"></script>
-<!-- maybe can be used to get JSON data from state 
+<!--
 <script type="text/javascript" src="sig.json"></script>
 <script type="text/javascript"> var sigData = JSON.parse(data);</script>
 -->
-
 <script type="text/javascript">
 
-  const createStateGamingSig = (contractAddress, licensee, expiry = 10e9) => {
+  const createGamingBySigMessage = (contractAddress, licensee) => {
     const types = {
       EIP712Domain: [
         { name: 'name', type: 'string' },
         { name: 'verifyingContract', type: 'address' },
       ],
-      GamingLicenseState: [
-        { name: 'licensee', type: 'address' },
-        { name: 'expiry', type: 'uint256' },
+      GamingLicensePlayer: [
+        { name: 'licensee', type: 'address' }
       ]
     };
 
-    const primaryType = 'GamingLicenseState';
+    const primaryType = 'GamingLicensePlayer';
     const domain = { name: 'GamingLicenseRegistry', verifyingContract: contractAddress };
-    const message = { licensee, expiry };
+    const message = { licensee };
 
     return JSON.stringify({ types, primaryType, domain, message });
   };
@@ -100,13 +81,9 @@
   window.addEventListener('load', (event) => {
     let web3;
     const web3Warning = document.getElementById('web3-warning');
-    const applicantName = document.getElementById('applicant-name');
-    const id_type = document.getElementById('applicant-id-type');
-    const id_number = document.getElementById('applicant-id-number');
-    const applicantEthAddress = document.getElementById('applicant-eth-address');
+    const myAddress = document.getElementById('my-address');
     const signature = document.getElementById('signature');
-    const expiry = document.getElementById('expiry');
-  
+
     if (typeof window.ethereum === 'undefined') {
       console.error('Client does not have an active Web3 provider or the example app is not being run from an HTTP server.');
       console.log('Go here to install MetaMask: https://metamask.io/');
@@ -123,27 +100,27 @@
     async function main() {
       web3 = new Web3(window.ethereum);
 
-      //const contractAddress = '0xA46A74e16fAED1527AB16d9ED3231Fc989843594';
+      // Mainnet
+      // const contractAddress = '0xA46A74e16fAED1527AB16d9ED3231Fc989843594';
       const contractAddress = '0xf22BaCbE9ba2F3c6Cb3416639195b108C444B99A'; 
       const contractAbi = window.gaming_registry_ABI;
       const gaming_registry_contract = new web3.eth.Contract(contractAbi, contractAddress);
 
       const accounts = await window.ethereum.enable();
-      const stateAccount = accounts[0];
+      const myAccount = accounts[0];
+
+      myAddress.innerText = myAccount;
 
       sign.onclick = async () => {
         console.debug('BEGIN CREATE SIGNATURE!')
-        // const _nonce = await gaming_registry_contract.methods.nonces(stateAccount).call();
-        const _expiry = 10e9; // expiration of signature, in seconds since unix epoch
-        console.debug('applicantEthAddress', applicantEthAddress.value);
-        console.debug('Signing Account (StateAccount)', stateAccount);
-        const msgParams = createStateGamingSig(contractAddress, applicantEthAddress.value, _expiry);
+
+        const msgParams = createGamingBySigMessage(contractAddress, myAccount);
         console.debug('msgParms before sign:', msgParams);
 
         web3.currentProvider.sendAsync({
           method: 'eth_signTypedData_v4',
-          params: [ stateAccount, msgParams ],
-          from: stateAccount
+          params: [ myAccount, msgParams ],
+          from: myAccount
         }, async (err, result) => {
           if (err) {
             console.error('ERROR', err);
@@ -154,47 +131,41 @@
             alert(result.error.message);
             return;
           }
-          console.debug('past send!')
+
           const sig = result.result;
-      
-          expiry.value = _expiry;
           signature.value = sig;
-       
+
           console.log('signature', sig);
           console.log('msgParams', JSON.parse(msgParams));
         });
       };
 
       apply.onclick = async () => {
-      
-        const _expiry = expiry.value;
+
         const sig = signature.value;
 
         const r = '0x' + sig.substring(2).substring(0, 64);
         const s = '0x' + sig.substring(2).substring(64, 128);
         const v = '0x' + sig.substring(2).substring(128, 130);
 
-        console.log('expiry', _expiry);
         console.log('v', v);
         console.log('r', r);
         console.log('s', s);
 
-        const tx = await gaming_registry_contract.methods.licenseFromState(applicantEthAddress.value, _expiry, v, r, s).send({
-          from: stateAccount,
+        const tx = await gaming_registry_contract.methods.licenseFromPlayer(myAccount, v, r, s).send({
+          from: myAccount,
           gasLimit: web3.utils.toHex(1000000),
           gasPrice: web3.utils.toHex(25000000000),
         });
 
         console.log('licenseBySig Transaction', tx);
+
+        // currentDelegatee = await comp.methods.delegates(myAccount).call();
+        // myDelegatee.innerText = currentDelegatee;
+        // console.log(`Now delegated to: ${currentDelegatee}`);
       };
     }
   });
 </script>
 
 </html>
-
-<!--ZAC TODO's
-
-1) error handling messages - ie, if state tries to submit sig from the wrong address, we want a pop up or inline message that shows generic error (at least)
-
--->
