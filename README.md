@@ -24,8 +24,6 @@ In this example, the License Minter would be the state of Colorado and the Licen
 ## Design Discussion 
 The three step process above could probably be reduced down to two steps in some cases. At the same time, using a three step process does also give some extra flexibility. For example, step one could be done over the internet ahead of time, and then steps two and three could be done in person in cases where human verification of ID is important. 
 
-Step one 
-
 ## Disclaimer
 Grasshopper is experimental software. Design challenges around privacy and security are immense and we have not yet addresses all these challenges :) 
 
