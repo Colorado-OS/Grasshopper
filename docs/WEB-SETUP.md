@@ -18,9 +18,9 @@ Or [http-server](https://www.npmjs.com/package/http-server) with Node:
 
 
 #### 1B) Running a local Eth node 
-If you want to test with a local ETH node you can use [Ganache-cli](https://github.com/trufflesuite/ganache-cli) like this:
-
 If you're using a development framework like Brownie you can just let it handle running the local blockchain for you. 
+
+If you want to test with a local ETH node you can use [Ganache-cli](https://github.com/trufflesuite/ganache-cli) like this:
 
 ```bash
 npx ganache-cli \
