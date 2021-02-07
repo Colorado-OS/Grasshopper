@@ -15,7 +15,7 @@ In this case, a Grasshopper signature exchange consists of three main steps. Eac
 
 We will show how an in person signature exchange can be done to strengthen certain security properties of the exchange by reducing sybil attack vectors. Future versions could incorporate [Minimal Anti-Collusion Infrastructure](https://github.com/appliedzkp/maci) to further expand into use cases where collusion resistance is needed.  
 
-In generic example, the License Minter would be the state of Colorado and the License Applicant would be the individual applying for the license or pass.  
+In an generic example, the License Minter would be the state of Colorado and the License Applicant would be the individual applying for the license or pass.  
 
 1) Initiate Application - The License Minter displays an address to the License Applicant to initiate the application - **The applicant initiates the application process by sending an transaction to License Minter address**. This step can optionally require the license applicant to submit a fee with the transaction. 
 

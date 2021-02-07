@@ -1,0 +1,78 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="apple-touch-icon" sizes="57x57" href="../img/favicon/apple-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="../img/favicon/apple-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="../img/favicon/apple-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="../img/favicon/apple-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="../img/favicon/apple-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="../img/favicon/apple-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="../img/favicon/apple-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="../img/favicon/apple-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../img/favicon/apple-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="192x192"  href="../img/favicon/android-icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="../img/favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="../img/favicon/favicon-96x96.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../img/favicon/favicon-16x16.png">
+  <link rel="manifest" href="../img/favicon/manifest.json">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="msapplication-TileImage" content="../img/favicon/ms-icon-144x144.png">
+  <meta name="theme-color" content="#ffffff">
+  <title>Grasshopper - Gaming License Application</title>
+  <meta name="description" content="Digital Signature Exchange Interface">
+
+  <link rel="stylesheet" href="../css/styles.css?v=1.0">
+
+</head>
+<!-- example layout taken from https://codepen.io/hunterlong/pen/gWMJww -->
+<body>
+</br>
+</br>
+</br>
+    <div class="ethpayment">
+
+        <div class="ethpaymentbar"></div>
+        
+        <img src="https://chart.apis.google.com/chart?cht=qr&chs=500x500&chl=ethereum:pay-0xD0896e012907d9938BE5d3fBc8e9FF5d284E2214@4?value=1e17&chld=H">
+
+        <span class="ethitem">
+            Initiate Digital Parks Pass Application 
+        </span>
+    
+        <span class="ethdescription">
+            Please send application fee to initiate the application process
+        </span>
+    
+        <span class="ethamount">
+          0.01 <b>ETH</b>
+      </span>
+      
+      <span class="ethusdamount">
+          $160 <b>USD</b>
+      </span>
+    
+        <input class="ethaddress" value="0xD0896e012907d9938BE5d3fBc8e9FF5d284E2214" readonly>
+    
+      <span class="ethpaymentdesc">
+        Send 0.01 ETH
+      </span>
+    <!--
+        <span class="ethpaymentstatus">
+        Not Received 
+       </span>
+    -->
+</div>
+
+<div class="notes">
+    <h4>As a first step, we can see the applicant/player initiating the license application by sending an fee to an address provided by the state.</h4>
+    <h4>This page/QR code could be served up remotely over the internet, or in person for added security.</h4>
+    <h4>We envision the receiving address to be unique per applicant, and provided from an HD wallet for easy/secure address distribution/management. </h4>
+    <h4>While this step could be seen as optional, it does provide an on-chain record of the applicant address which is important for step 2. Also, by requiring the application fee first we can ensure the applicant is serious about applying.</h4>
+    <a href="./state-parks-pass-sig.html">>>>Step 2: State Parks Pass Signature Interface</a>
+</div>
+
+</body>
+</html>

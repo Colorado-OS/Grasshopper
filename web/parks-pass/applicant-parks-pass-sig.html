@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="../css/style-2.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="apple-touch-icon" sizes="57x57" href="../img/favicon/apple-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="../img/favicon/apple-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="../img/favicon/apple-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="../img/favicon/apple-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="../img/favicon/apple-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="../img/favicon/apple-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="../img/favicon/apple-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="../img/favicon/apple-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../img/favicon/apple-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="192x192"  href="../img/favicon/android-icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="../img/favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="../img/favicon/favicon-96x96.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../img/favicon/favicon-16x16.png">
+  <link rel="manifest" href="../img/favicon/manifest.json">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="msapplication-TileImage" content="../img/favicon/ms-icon-144x144.png">
+  <meta name="theme-color" content="#ffffff">
+  <title>Grasshopper - Applicant Gaming License</title>
+</head>
+<body>
+  <h1>Applicant Parks Pass</h1>
+  <h2>1) Create Signature</h2>
+  <h2>Applicant Info</h2>
+  <div id="web3-warning" class="hidden warning">
+    Make sure the example app is being served with an HTTP server. <br />
+    Please install MetaMask: <a href="https://metamask.io/">https://metamask.io/</a>
+  </div>
+  <div class="card">
+    <label>Licensee Address: </label>&nbsp;<span id="my-address"></span>
+    <br />
+    <br />
+    <label>DeFi Donation (ETH): </label>&nbsp;<input id="applicant-defi-donation" type="text" value=".01"/>
+    <br />
+    <input id="sign" type="submit" value="Create Application Signature" />
+  </div>
+  <h2>2) Broadcast Signature to Parks Pass Registry</h2>
+  <div class="card">
+    <!--
+    <label>Applicant:</label>&nbsp;<span id="my-address"></span>
+     <br />
+    <label>Nonce: </label>&nbsp;<input id="nonce" type="text" />
+    <br />
+    <label>Expiry: </label>&nbsp;<input id="expiry" type="text" />
+    <br />
+    -->
+    <label>Signature: </label>&nbsp;<input id="signature" type="text" />
+    <br />
+    <input id="apply" type="submit" value="Broadcast License Request" />
+  </div>
+</body>
+
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.2.6/dist/web3.min.js"></script>
+<script type="text/javascript" src="../js/ParksPassRegistry.js"></script>
+<!--
+<script type="text/javascript" src="sig.json"></script>
+<script type="text/javascript"> var sigData = JSON.parse(data);</script>
+-->
+<script type="text/javascript">
+
+  const createParksPassSigMessage = (contractAddress, licensee) => {
+    const types = {
+      EIP712Domain: [
+        { name: 'name', type: 'string' },
+        { name: 'verifyingContract', type: 'address' },
+      ],
+      ParksPassUser: [
+        { name: 'licensee', type: 'address' }
+      ]
+    };
+
+    const primaryType = 'ParksPassUser';
+    const domain = { name: 'ParksPassRegistry', verifyingContract: contractAddress };
+    const message = { licensee };
+
+    return JSON.stringify({ types, primaryType, domain, message });
+  };
+  // not updated yet 
+  window.addEventListener('load', (event) => {
+    let web3;
+    const web3Warning = document.getElementById('web3-warning');
+    const myAddress = document.getElementById('my-address');
+    const signature = document.getElementById('signature');
+
+    if (typeof window.ethereum === 'undefined') {
+      console.error('Client does not have an active Web3 provider or the example app is not being run from an HTTP server.');
+      console.log('Go here to install MetaMask: https://metamask.io/');
+      alert(
+        'You need a Web3 provider to run this page. ' + 
+        'Go here to install MetaMask:\n\n' +
+        'https://metamask.io/'
+      );
+      web3Warning.classList.remove('hidden');
+    } else {
+      main();
+    }
+
+    async function main() {
+      web3 = new Web3(window.ethereum);
+
+      // Mainnet
+      // const contractAddress = '0xA46A74e16fAED1527AB16d9ED3231Fc989843594';
+      const contractAddress = '0xf22BaCbE9ba2F3c6Cb3416639195b108C444B99A'; 
+      const contractAbi = window.parks_pass_registry_ABI;
+      const gaming_registry_contract = new web3.eth.Contract(contractAbi, contractAddress);
+
+      const accounts = await window.ethereum.enable();
+      const myAccount = accounts[0];
+
+      myAddress.innerText = myAccount;
+
+      sign.onclick = async () => {
+        console.debug('BEGIN CREATE SIGNATURE!')
+
+        const msgParams = createParksPassSigMessage(contractAddress, myAccount);
+        console.debug('msgParms before sign:', msgParams);
+
+        web3.currentProvider.sendAsync({
+          method: 'eth_signTypedData_v4',
+          params: [ myAccount, msgParams ],
+          from: myAccount
+        }, async (err, result) => {
+          if (err) {
+            console.error('ERROR', err);
+            alert(err);
+            return;
+          } else if (result.error) {
+            console.error('ERROR', result.error.message);
+            alert(result.error.message);
+            return;
+          }
+
+          const sig = result.result;
+          signature.value = sig;
+
+          console.log('signature', sig);
+          console.log('msgParams', JSON.parse(msgParams));
+        });
+      };
+
+      apply.onclick = async () => {
+
+        const sig = signature.value;
+
+        const r = '0x' + sig.substring(2).substring(0, 64);
+        const s = '0x' + sig.substring(2).substring(64, 128);
+        const v = '0x' + sig.substring(2).substring(128, 130);
+
+        console.log('v', v);
+        console.log('r', r);
+        console.log('s', s);
+
+        const tx = await gaming_registry_contract.methods.parksPassFromPlayer(myAccount, v, r, s).send({
+          from: myAccount,
+          gasLimit: web3.utils.toHex(1000000),
+          gasPrice: web3.utils.toHex(25000000000),
+        });
+
+        console.log('licenseBySig Transaction', tx);
+
+        // currentDelegatee = await comp.methods.delegates(myAccount).call();
+        // myDelegatee.innerText = currentDelegatee;
+        // console.log(`Now delegated to: ${currentDelegatee}`);
+      };
+    }
+  });
+</script>
+
+</html>
