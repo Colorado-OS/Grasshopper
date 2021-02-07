@@ -2,7 +2,7 @@
 ### ETHDenver 2021  - ColoradoJam - Public Infrastructure 
 Grasshopper is a minimalist interface to mint & exchange digital signatures or attestations.  
 
-Signatures & metadata can be (in theory) linked to self sovereign identities, pinned to IPFS (maybe Ceramic?), broadcast to Web3, or pushed to an API. 
+Signatures & metadata could be linked to self sovereign identities, pinned to IPFS (maybe Ceramic?), broadcast to Web3, or pushed to an API.  
 
 For the ColoradoJam proof of concept we aim to show how Grasshopper can be used to license a new business, state parks pass, hunting or fishing license, or to mint a digitally signed gaming license that powers not-for-profit game of chance on Ethereum.  
  
@@ -27,5 +27,5 @@ The three step process above could probably be reduced down to two steps in some
 ## Disclaimer
 Grasshopper is experimental software. Design challenges around privacy and security are immense and we have not yet addresses all these challenges :) 
 
-**Not yet implemented - 
+**Not yet implemented 
 
