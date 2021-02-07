@@ -52,8 +52,12 @@
     <br />
     <input id="apply" type="submit" value="Broadcast License Request" />
   </div>
+  <div class="card">
+  <p> Use Case #2 - 
+  <a href="../gaming/initiate-gaming-license.html"> >>> Digital Gaming Passport & non-profit games of chance for public goods</a>
+  </p>
+  </div>  
 </body>
-
 
 <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.2.6/dist/web3.min.js"></script>
 <script type="text/javascript" src="../js/ParksPassRegistry.js"></script>
@@ -146,6 +150,7 @@
       apply.onclick = async () => {
 
         const sig = signature.value;
+        //const completed = completed.value;
 
         const r = '0x' + sig.substring(2).substring(0, 64);
         const s = '0x' + sig.substring(2).substring(64, 128);

@@ -94,7 +94,7 @@
         { name: 'name', type: 'string' },
         { name: 'verifyingContract', type: 'address' },
       ],
-      GamingLicenseState: [
+      ParksPassState: [
         { name: 'licensee', type: 'address' },
         { name: 'expiry', type: 'uint256' },
       ]
@@ -133,18 +133,15 @@
 
     async function main() {
       web3 = new Web3(window.ethereum);
-
-      //const contractAddress = '0xA46A74e16fAED1527AB16d9ED3231Fc989843594';
       const contractAddress = '0xf22BaCbE9ba2F3c6Cb3416639195b108C444B99A'; 
       const contractAbi = window.parks_pass_registry_ABI;
-      const gaming_registry_contract = new web3.eth.Contract(contractAbi, contractAddress);
+      const parks_pass_contract = new web3.eth.Contract(contractAbi, contractAddress);
 
       const accounts = await window.ethereum.enable();
       const stateAccount = accounts[0];
 
       sign.onclick = async () => {
         console.debug('BEGIN CREATE SIGNATURE!')
-        // const _nonce = await gaming_registry_contract.methods.nonces(stateAccount).call();
         const _expiry = 10e9; // expiration of signature, in seconds since unix epoch
         console.debug('applicantEthAddress', applicantEthAddress.value);
         console.debug('Signing Account (StateAccount)', stateAccount);
@@ -190,7 +187,7 @@
         console.log('r', r);
         console.log('s', s);
 
-        const tx = await gaming_registry_contract.methods.parksPassFromState(applicantEthAddress.value, _expiry, v, r, s).send({
+        const tx = await parks_pass_contract.methods.parksPassFromState(applicantEthAddress.value, _expiry, v, r, s).send({
           from: stateAccount,
           gasLimit: web3.utils.toHex(1000000),
           gasPrice: web3.utils.toHex(25000000000),

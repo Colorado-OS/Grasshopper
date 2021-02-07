@@ -7,6 +7,8 @@ Signatures & metadata can be linked to self sovereign identities, pinned to IPFS
 💡 Grasshopper has been bootstrapped from these awesome [Compound.Finance governance examples](https://github.com/compound-developers/compound-governance-examples) that use EIP712 signed messages for voting and delegation.💡 
 
 For the ColoradoJam proof of concept we aim to show how Grasshopper can be used to issue a digital state parks pass and to mint a digital players gaming license NFT that powers not-for-profit game of chance on Ethereum.  
+
+Moving forward we can see Grasshopper exchange interfaces existing as minimal verifiable UIs on the decentralized web like app.uniswap.org.    
  
 ## How does Grasshopper work? 
 [insert-diagram](diagram-here)

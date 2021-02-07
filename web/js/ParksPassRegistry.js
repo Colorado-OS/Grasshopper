@@ -1,4 +1,4 @@
-window.parks_pass_ABI =  [
+window.parks_pass_registry_ABI =  [
   {
     "inputs": [
       {
