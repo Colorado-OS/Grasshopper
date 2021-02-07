@@ -30,9 +30,18 @@ npx ganache-cli \
 ```
 
 ### 2) Setup for Rinkeby testing
-TODO
 
+```bash
+export WEB3_INFURA_PROJECT_ID='<infura-rinkeby-key-here>'
+```
+``bash
+brownie console --network rinkeby
+```
+```
+accounts.from_mnemonic('')
+```
 
 ### 3) setup for Mainnet 
 TODO
+
 

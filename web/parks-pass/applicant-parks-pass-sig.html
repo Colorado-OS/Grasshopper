@@ -106,10 +106,7 @@
 
     async function main() {
       web3 = new Web3(window.ethereum);
-
-      // Mainnet
-      // const contractAddress = '0xA46A74e16fAED1527AB16d9ED3231Fc989843594';
-      const contractAddress = '0xf22BaCbE9ba2F3c6Cb3416639195b108C444B99A'; 
+      const contractAddress = '0x911Bb98F586Da0005C74dAAee9D4d55dCabAB153'; //Rinkeby ParksPassRegistry
       const contractAbi = window.parks_pass_registry_ABI;
       const gaming_registry_contract = new web3.eth.Contract(contractAbi, contractAddress);
 

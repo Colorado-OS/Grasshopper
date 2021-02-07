@@ -1,3 +1,25 @@
+var parks_pass_registry_address = function() {
+  if (document.web3network === null) {
+    // default to mainnet if web3network isn't found in time
+    document.web3network = 'mainnet';
+  }
+  switch (document.web3network) {
+    case 'mainnet':
+      // not on mainnet 
+      throw 'this network is not supported by parks pass registry!';
+    case 'ropsten':
+      throw 'this network is not supported by parks pass registry';
+    case 'kovan':
+      throw 'this network is not supported by parks pass registry';
+    case 'rinkeby':
+
+      return '0xA438dDf3bE114f1338368A87A43E5f35D8128488';
+    case 'custom network':
+      // local RPC
+      return '0xf22BaCbE9ba2F3c6Cb3416639195b108C444B99A';
+  }
+};
+
 window.parks_pass_registry_ABI =  [
   {
     "inputs": [

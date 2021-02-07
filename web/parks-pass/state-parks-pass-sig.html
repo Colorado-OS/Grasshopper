@@ -50,7 +50,7 @@
    <label>ID #: </label>&nbsp;<input id="applicant-id-number" type="text" value="02-42424242" />
    <br />
    <br />
-   <label>Applicant ETH Address: </label>&nbsp;<input id="applicant-eth-address" type="text" value="0xBf03c3354aae2B14731838fCb7BD322b11685689" readonly/>
+   <label>Applicant ETH Address: </label>&nbsp;<input id="applicant-eth-address" type="text" value="0x5f8ddbae96fe224e21453C8eBd40EB652883823f" readonly/>
    <br />
    <input id="sign" type="submit" value="Create Application Signature" />
   </div>
@@ -133,7 +133,7 @@
 
     async function main() {
       web3 = new Web3(window.ethereum);
-      const contractAddress = '0xf22BaCbE9ba2F3c6Cb3416639195b108C444B99A'; 
+      const contractAddress = '0x911Bb98F586Da0005C74dAAee9D4d55dCabAB153'; // rinkeby ParksPassRegistry
       const contractAbi = window.parks_pass_registry_ABI;
       const parks_pass_contract = new web3.eth.Contract(contractAbi, contractAddress);
 
