@@ -39,7 +39,7 @@ Grasshopper is experimental software. Design challenges around privacy and secur
 
 ---
 
- ❤️🧡💛💚💙💜  thank you ETHDenver  ❤️🧡💛💚💙💜
+ ❤️🧡💛💚💙💜 ETHDenver 2021 - ColoradoJam  ❤️🧡💛💚💙💜
 
 
 
