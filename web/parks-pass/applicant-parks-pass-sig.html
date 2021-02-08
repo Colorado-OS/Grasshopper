@@ -34,7 +34,7 @@
     <label>Licensee Address: </label>&nbsp;<span id="my-address"></span>
     <br />
     <br />
-    <label>DeFi Donation (ETH): </label>&nbsp;<input id="applicant-defi-donation" type="text" value=".01"/>
+    <label>DeFi Donation (ETH): </label>&nbsp;<input id="donation" type="text" value=".01"/>
     <br />
     <input id="sign" type="submit" value="Create Application Signature" />
   </div>
@@ -45,9 +45,9 @@
      <br />
     <label>Nonce: </label>&nbsp;<input id="nonce" type="text" />
     <br />
-    <label>Expiry: </label>&nbsp;<input id="expiry" type="text" />
-    <br />
     -->
+    <label>DeFi Donation: </label>&nbsp;<input id="final_donation" type="text" />
+    <br />
     <label>Signature: </label>&nbsp;<input id="signature" type="text" />
     <br />
     <input id="apply" type="submit" value="Broadcast License Request" />
@@ -84,12 +84,13 @@
 
     return JSON.stringify({ types, primaryType, domain, message });
   };
-  // not updated yet 
+  
   window.addEventListener('load', (event) => {
     let web3;
     const web3Warning = document.getElementById('web3-warning');
     const myAddress = document.getElementById('my-address');
     const signature = document.getElementById('signature');
+    const donation = document.getElementById('donation');
 
     if (typeof window.ethereum === 'undefined') {
       console.error('Client does not have an active Web3 provider or the example app is not being run from an HTTP server.');
@@ -108,7 +109,7 @@
       web3 = new Web3(window.ethereum);
       const contractAddress = '0x911Bb98F586Da0005C74dAAee9D4d55dCabAB153'; //Rinkeby ParksPassRegistry
       const contractAbi = window.parks_pass_registry_ABI;
-      const gaming_registry_contract = new web3.eth.Contract(contractAbi, contractAddress);
+      const park_pass_registry_contract = new web3.eth.Contract(contractAbi, contractAddress);
 
       const accounts = await window.ethereum.enable();
       const myAccount = accounts[0];
@@ -138,6 +139,7 @@
 
           const sig = result.result;
           signature.value = sig;
+          final_donation.value = donation.value;
 
           console.log('signature', sig);
           console.log('msgParams', JSON.parse(msgParams));
@@ -147,8 +149,8 @@
       apply.onclick = async () => {
 
         const sig = signature.value;
-        //const completed = completed.value;
-
+        const defi_donation = web3.utils.toWei(donation.value, 'ether');
+     
         const r = '0x' + sig.substring(2).substring(0, 64);
         const s = '0x' + sig.substring(2).substring(64, 128);
         const v = '0x' + sig.substring(2).substring(128, 130);
@@ -157,10 +159,11 @@
         console.log('r', r);
         console.log('s', s);
 
-        const tx = await gaming_registry_contract.methods.parksPassFromPlayer(myAccount, v, r, s).send({
+        const tx = await park_pass_registry_contract.methods.parksPassFromPlayer(myAccount, v, r, s).send({
           from: myAccount,
+          value: web3.utils.toHex(defi_donation), 
           gasLimit: web3.utils.toHex(1000000),
-          gasPrice: web3.utils.toHex(25000000000),
+          gasPrice: web3.utils.toHex(25000000000), // in GWEI
         });
 
         console.log('licenseBySig Transaction', tx);
