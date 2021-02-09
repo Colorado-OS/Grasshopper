@@ -20,12 +20,12 @@
   <meta name="msapplication-TileColor" content="#ffffff">
   <meta name="msapplication-TileImage" content="../img/favicon/ms-icon-144x144.png">
   <meta name="theme-color" content="#ffffff">
-  <title>Grasshopper - Applicant Gaming License</title>
+  <title>Colorado OS - Applicant Gaming License</title>
 </head>
 <body>
-  <h1>Applicant Parks Pass</h1>
+  <h1>Public Parks Pass Application</h1>
   <h2>1) Create Signature</h2>
-  <h2>Applicant Info</h2>
+
   <div id="web3-warning" class="hidden warning">
     Make sure the example app is being served with an HTTP server. <br />
     Please install MetaMask: <a href="https://metamask.io/">https://metamask.io/</a>
@@ -36,16 +36,10 @@
     <br />
     <label>DeFi Donation (ETH): </label>&nbsp;<input id="donation" type="text" value=".01"/>
     <br />
-    <input id="sign" type="submit" value="Create Application Signature" />
+    <input id="sign" type="submit" value="load applicant web3 Signature" />
   </div>
   <h2>2) Broadcast Signature to Parks Pass Registry</h2>
   <div class="card">
-    <!--
-    <label>Applicant:</label>&nbsp;<span id="my-address"></span>
-     <br />
-    <label>Nonce: </label>&nbsp;<input id="nonce" type="text" />
-    <br />
-    -->
     <label>DeFi Donation: </label>&nbsp;<input id="final_donation" type="text" />
     <br />
     <label>Signature: </label>&nbsp;<input id="signature" type="text" />
@@ -159,7 +153,7 @@
         console.log('r', r);
         console.log('s', s);
 
-        const tx = await park_pass_registry_contract.methods.parksPassFromPlayer(myAccount, v, r, s).send({
+        const tx = await park_pass_registry_contract.methods.parksPassFromApplicant(myAccount, v, r, s).send({
           from: myAccount,
           value: web3.utils.toHex(defi_donation), 
           gasLimit: web3.utils.toHex(1000000),
@@ -168,9 +162,6 @@
 
         console.log('licenseBySig Transaction', tx);
 
-        // currentDelegatee = await comp.methods.delegates(myAccount).call();
-        // myDelegatee.innerText = currentDelegatee;
-        // console.log(`Now delegated to: ${currentDelegatee}`);
       };
     }
   });

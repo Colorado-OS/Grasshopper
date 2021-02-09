@@ -1,26 +1,4 @@
-var parks_pass_registry_address = function() {
-  if (document.web3network === null) {
-    // default to mainnet if web3network isn't found in time
-    document.web3network = 'mainnet';
-  }
-  switch (document.web3network) {
-    case 'mainnet':
-      // not on mainnet 
-      throw 'this network is not supported by parks pass registry!';
-    case 'ropsten':
-      throw 'this network is not supported by parks pass registry';
-    case 'kovan':
-      throw 'this network is not supported by parks pass registry';
-    case 'rinkeby':
-
-      return '0xA438dDf3bE114f1338368A87A43E5f35D8128488';
-    case 'custom network':
-      // local RPC
-      return '0xf22BaCbE9ba2F3c6Cb3416639195b108C444B99A';
-  }
-};
-
-window.parks_pass_registry_ABI =  [
+window.parks_pass_registry_ABI =   [
   {
     "inputs": [
       {
@@ -31,6 +9,16 @@ window.parks_pass_registry_ABI =  [
       {
         "internalType": "address",
         "name": "_parksPassToken",
+        "type": "address"
+      },
+      {
+        "internalType": "address payable",
+        "name": "_cETHContract",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_multiSig",
         "type": "address"
       }
     ],
@@ -103,7 +91,20 @@ window.parks_pass_registry_ABI =  [
         "type": "address"
       }
     ],
-    "name": "getLicenseExpiry",
+    "name": "getApplicantLicense",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getEthBalance",
     "outputs": [
       {
         "internalType": "uint256",
@@ -122,12 +123,12 @@ window.parks_pass_registry_ABI =  [
         "type": "address"
       }
     ],
-    "name": "getPlayerLicense",
+    "name": "getLicenseExpiry",
     "outputs": [
       {
-        "internalType": "bool",
+        "internalType": "uint256",
         "name": "",
-        "type": "bool"
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",
@@ -183,6 +184,19 @@ window.parks_pass_registry_ABI =  [
   },
   {
     "inputs": [],
+    "name": "multiSig",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "name",
     "outputs": [
       {
@@ -217,9 +231,9 @@ window.parks_pass_registry_ABI =  [
         "type": "bytes32"
       }
     ],
-    "name": "parksPassFromPlayer",
+    "name": "parksPassFromApplicant",
     "outputs": [],
-    "stateMutability": "nonpayable",
+    "stateMutability": "payable",
     "type": "function"
   },
   {
@@ -269,6 +283,25 @@ window.parks_pass_registry_ABI =  [
     "type": "function"
   },
   {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "amount_in_wei",
+        "type": "uint256"
+      }
+    ],
+    "name": "redeemcEthFromCompound",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "stateSigner",
     "outputs": [
@@ -279,6 +312,32 @@ window.parks_pass_registry_ABI =  [
       }
     ],
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "supplyEthToCompound",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "withdrawAmount",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   }
 ]
